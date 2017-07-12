@@ -1,0 +1,33 @@
+{
+    "name": "pwm/deepend",
+    "type": "library",
+    "description": "DeepEnd",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zsolt Szende",
+            "email": "zs@szende.me"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pwm\\DeepEnd\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pwm\\DeepEnd\\": "tests/unit/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
