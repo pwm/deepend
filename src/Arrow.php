@@ -3,39 +3,44 @@ declare(strict_types=1);
 
 namespace Pwm\DeepEnd;
 
+use Pwm\DeepEnd\Exception\IncompleteArrow;
+
 class Arrow
 {
-    /** @var Node */
-    private $fromNode;
+    /** @var string */
+    private $fromNodeId;
 
-    /** @var Node */
-    private $toNode;
+    /** @var string */
+    private $toNodeId;
 
-    public function __construct(Node $fromNode = null, Node $toNode = null)
+    public function from(string $nodeId): Arrow
     {
-        $this->fromNode = $fromNode;
-        $this->toNode = $toNode;
-    }
-
-    public function from(Node $node): Arrow
-    {
-        $this->fromNode = $node;
+        $this->fromNodeId = $nodeId;
         return $this;
     }
 
-    public function to(Node $node): Arrow
+    public function to(string $nodeId): Arrow
     {
-        $this->toNode = $node;
+        $this->toNodeId = $nodeId;
         return $this;
     }
 
-    public function getFrom(): Node
+    public function getFromNodeId(): string
     {
-        return $this->fromNode;
+        self::ensureNodeIsSet($this->fromNodeId);
+        return $this->fromNodeId;
     }
 
-    public function getTo(): Node
+    public function getToNodeId(): string
     {
-        return $this->toNode;
+        self::ensureNodeIsSet($this->toNodeId);
+        return $this->toNodeId;
+    }
+
+    private static function ensureNodeIsSet(?string $nodeId): void
+    {
+        if ($nodeId === null) {
+            throw new IncompleteArrow('An arrow must have "from" and "to" nodes to be drawable.');
+        }
     }
 }

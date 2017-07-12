@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Pwm\DeepEnd;
 
 use Pwm\DeepEnd\Exception\CycleDetected;
+use Pwm\DeepEnd\Exception\NodeAlreadyPresent;
+use Pwm\DeepEnd\Exception\NodeDoesNotExist;
 
 class DeepEnd
 {
@@ -13,81 +15,100 @@ class DeepEnd
     /** @var Node[][] */
     private $adjacencyList = [];
 
-    public function add(Arrow $arrow): void
+    public function add(string $nodeId): void
     {
-        $fromNode = $this->deduplicateNode($arrow->getFrom());
-        $toNode = $this->deduplicateNode($arrow->getTo());
-        $this->addNode($fromNode);
-        $this->addNode($toNode);
-        $this->connect($fromNode, $toNode);
+        if ($this->retrieveNode($nodeId) instanceof Node) {
+            throw new NodeAlreadyPresent(sprintf('Node %s is already present.', $nodeId));
+        }
+        $this->nodeIdMap[$nodeId] = new Node($nodeId);
+        $this->adjacencyList[$nodeId] = [];
+    }
+
+    public function draw(Arrow $arrow): void
+    {
+        if (! ($fromNode = $this->retrieveNode($arrow->getFromNodeId())) instanceof Node) {
+            throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $arrow->getFromNodeId()));
+        }
+        if (! ($toNode = $this->retrieveNode($arrow->getToNodeId())) instanceof Node) {
+            throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $arrow->getToNodeId()));
+        }
+
+        if ($this->isReachable($toNode, $fromNode)) {
+            throw new CycleDetected(
+                sprintf('An arrow from %s to %s would result in a cycle.', $fromNode->getId(), $toNode->getId())
+            );
+        }
+
+        $this->drawArrow($fromNode, $toNode);
     }
 
     public function sort(): array
     {
+        return $this->topologicalSort();
+    }
+
+    private function retrieveNode(string $nodeId): ?Node
+    {
+        return $this->nodeIdMap[$nodeId] ?? null;
+    }
+
+    private function unvisitNodes(): void
+    {
         foreach ($this->nodeIdMap as $node) {
             $node->unvisit();
         }
-
-        $this->depthFirstSearch();
-
-        return self::topologicalSort($this->nodeIdMap);
     }
 
-    private function deduplicateNode(Node $node): Node
-    {
-        return array_key_exists($node->getId(), $this->nodeIdMap)
-            ? $this->nodeIdMap[$node->getId()]
-            : $node;
-    }
-
-    private function addNode(Node $node): void
-    {
-        if (! array_key_exists($node->getId(), $this->nodeIdMap)) {
-            $this->nodeIdMap[$node->getId()] = $node;
-            $this->adjacencyList[$node->getId()] = [];
-        }
-    }
-
-    private function connect(Node $fromNode, Node $toNode): void
+    private function drawArrow(Node $fromNode, Node $toNode): void
     {
         if (! in_array($toNode, $this->adjacencyList[$fromNode->getId()], true)) {
             $this->adjacencyList[$fromNode->getId()][] = $toNode;
         }
-        $this->ensureDAG($fromNode, $toNode);
     }
 
-    private function ensureDAG(Node $fromNode, Node $toNode): void
+    private function isReachable(Node $fromNode, Node $toNode): bool
     {
-        //@todo: ensure there's no path from $toNode to $fromNode
-        //throw new CycleDetected();
+        $explore = function (Node $node) use (&$explore) {
+            $node->visit();
+            foreach ($this->adjacencyList[$node->getId()] as $nextNode) {
+                if (! $nextNode->visited()) {
+                    $explore($nextNode);
+                }
+            }
+        };
+
+        $this->unvisitNodes();
+        $explore($fromNode);
+        return $toNode->visited();
     }
 
-    private function depthFirstSearch(): void
+    private function topologicalSort(): array
     {
         $explore = function (Node $node, int $index) use (&$explore): int {
             $node->visit();
-            $nodeAdjacencyList = $this->adjacencyList[$node->getId()];
-            foreach ($nodeAdjacencyList as $nextNode) {
+            foreach ($this->adjacencyList[$node->getId()] as $nextNode) {
                 if (! $nextNode->visited()) {
                     $index = $explore($nextNode, $index);
                 }
             }
-            $index++;
-            $node->setIndex($index);
+            $node->setIndex(++$index);
             return $index;
         };
 
+        $this->unvisitNodes();
         $index = 0;
         foreach ($this->nodeIdMap as $node) {
             if (! $node->visited()) {
                 $index = $explore($node, $index);
             }
         }
+
+        return self::sortedNodeIds($this->nodeIdMap);
     }
 
-    private static function topologicalSort(array $nodeIdMap): array
+    private static function sortedNodeIds(array $nodeIdMap): array
     {
-        uasort($nodeIdMap, function (Node $v1, Node $v2): int {
+        usort($nodeIdMap, function (Node $v1, Node $v2): int {
             return $v2->getIndex() - $v1->getIndex();
         });
 
