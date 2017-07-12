@@ -8,20 +8,29 @@ class Node
     /** @var string */
     private $id;
 
+    /** @var null|mixed */
+    private $data;
+
     /** @var bool */
     private $visited = false;
 
     /** @var int */
     private $index = 0;
 
-    public function __construct(string $id)
+    public function __construct(string $id, $data = null)
     {
         $this->id = $id;
+        $this->data = $data;
     }
 
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 
     public function visited(): bool

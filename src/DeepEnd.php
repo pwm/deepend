@@ -15,12 +15,12 @@ class DeepEnd
     /** @var Node[][] */
     private $adjacencyList = [];
 
-    public function add(string $nodeId): void
+    public function add(string $nodeId, $nodeData = null): void
     {
         if ($this->retrieveNode($nodeId) instanceof Node) {
             throw new NodeAlreadyPresent(sprintf('Node %s is already present.', $nodeId));
         }
-        $this->nodeIdMap[$nodeId] = new Node($nodeId);
+        $this->nodeIdMap[$nodeId] = new Node($nodeId, $nodeData);
         $this->adjacencyList[$nodeId] = [];
     }
 
@@ -44,7 +44,20 @@ class DeepEnd
 
     public function sort(): array
     {
-        return $this->topologicalSort();
+        $nodesSortedByIndex = $this->topologicalSort();
+        return array_map(function (Node $v): string {
+            return $v->getId();
+        }, $nodesSortedByIndex);
+    }
+
+    public function sortToMap(): array
+    {
+        $nodesSortedByIndex = $this->topologicalSort();
+        $sortedNodeMap = [];
+        foreach ($nodesSortedByIndex as $node) { /** @var Node $node */
+            $sortedNodeMap[$node->getId()] = $node->getData();
+        }
+        return $sortedNodeMap;
     }
 
     private function retrieveNode(string $nodeId): ?Node
@@ -103,17 +116,14 @@ class DeepEnd
             }
         }
 
-        return self::sortedNodeIds($this->nodeIdMap);
+        return self::sortNodeByIndex($this->nodeIdMap);
     }
 
-    private static function sortedNodeIds(array $nodeIdMap): array
+    private static function sortNodeByIndex(array $nodeIdMap): array
     {
         usort($nodeIdMap, function (Node $v1, Node $v2): int {
             return $v2->getIndex() - $v1->getIndex();
         });
-
-        return array_map(function (Node $v): string {
-            return $v->getId();
-        }, $nodeIdMap);
+        return $nodeIdMap;
     }
 }

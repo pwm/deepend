@@ -16,6 +16,8 @@ PHP 7.1+
 
 ## Usage
 
+Below is a simple example of creating dependencies between 4 tasks:
+
 ```php
 // Create an empty store
 $deepEnd = new DeepEnd();
@@ -33,9 +35,39 @@ $deepEnd->draw((new Arrow)->from('t1')->to('t3'));
 $deepEnd->draw((new Arrow)->from('t2')->to('t4'));
 
 // Get a valid execution order
-$order = $deepEnd->sort(); // ['t1', 't3', 't2', 't4']
+$order = $deepEnd->sort(); // $order = ['t1', 't3', 't2', 't4']
 ```
 
-## Test
+You can also add data (including functions and objects) to them for later use. For this case use the `sortToMap()` method, which returns a map with ids as keys and data as values.
+
+```php
+function jobRunner(string $id, string $data): void
+{
+    echo sprintf('Running job %s with data %s ... done.', $id, $data) . PHP_EOL;
+}
+
+$deepEnd = new DeepEnd();
+
+$deepEnd->add('t1', 't1-data');
+$deepEnd->add('t2', 't2-data');
+$deepEnd->add('t3', 't3-data');
+$deepEnd->add('t4', 't4-data');
+
+$deepEnd->draw((new Arrow)->from('t1')->to('t2'));
+$deepEnd->draw((new Arrow)->from('t1')->to('t3'));
+$deepEnd->draw((new Arrow)->from('t2')->to('t4'));
+
+$orderedTasks = $deepEnd->sortToMap();
+foreach ($orderedTasks as $jobId => $jobData) {
+    jobRunner($jobId, $jobData);
+}
+
+// Running job t1 with data t1-data ... done.
+// Running job t3 with data t3-data ... done.
+// Running job t2 with data t2-data ... done.
+// Running job t4 with data t4-data ... done.
+```
+
+## Tests
 
 	$ vendor/bin/phpunit

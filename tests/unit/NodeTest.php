@@ -15,8 +15,18 @@ class NodeTest extends TestCase
         $node = new Node('id');
         static::assertInstanceOf(Node::class, $node);
         static::assertSame('id', $node->getId());
+        static::assertNull($node->getData());
         static::assertFalse($node->visited());
         static::assertSame(0, $node->getIndex());
+    }
+
+    /**
+     * @test
+     */
+    public function node_can_be_created_with_data(): void
+    {
+        $node = new Node('id', 'data');
+        static::assertSame('data', $node->getData());
     }
 
     /**
