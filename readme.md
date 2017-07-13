@@ -2,8 +2,8 @@
 
 A simple library for scheduling dependent task execution.
 
-The goal is to be able to build a network of dependent entities which can then be sorted to an order that is a correct execution order, ie. if task B depends on task A then task A comes before task B.
- 
+The goal is to be able to build a network of dependent entities, eg. task ids, which can then be sorted into a correct execution order. This means that if task B depends on task A then task A comes before task B in the sorted order.
+
 ## Requirements
 
 PHP 7.1+
@@ -70,9 +70,9 @@ foreach ($orderedTasks as $taskId => $taskData) {
 
 When adding entries via the `add()` method and arrows via the `draw()` method you are actually building a graph, more specifically a directed acyclic graph (DAG), where nodes are added via `add()` and edges/arrows via `draw()`.
 
-Every time you want to draw a new arrow from node A to node B DeepEnd check whether it would create a cycle and if the answer is yes then it will tell you in the form of an exception. The way this is done is that before drawing the arrow DeepEnd checks whether A is already reachable from B, ie. whether there's a path from B to A. If there is then an arrow from A to B would lead to a cycle as you can already get from B to A and then, via the new arrow, back to B.
+Every time you want to draw a new arrow from node A to node B DeepEnd check whether it would create a cycle and if the answer is yes then it will tell you in the form of an exception. The way this is done is that, before drawing the arrow, DeepEnd checks whether A is already reachable from B, ie. whether there's a path from B to A. If there is, then an arrow from A to B would lead to a cycle as you can already get from B to A and then, via the new arrow, back to B.
 
-Once you have your graph built the `sort()` method can be used to do what is called a topological sort on your DAG. This is done using depth first search where DeepEnd incrementally indexes nodes as it leaves them after visiting. This is known as postordering. Once finished it will sort the nodes in reverse order starting with nodes with the highest post order index. This results in an order where nodes that depend on other nodes come after them, which is what we are after.
+Once you have your graph built the `sort()` method can be used to do what is called a topological sort on your DAG. This is done using depth first search where DeepEnd incrementally indexes nodes as it leaves them after visiting. This is known as postordering. Once finished it will sort the nodes in reverse order, starting with nodes with the highest post order index. This results in an order where nodes that depend on other nodes come after them, which is what we are after.
 
 ## Tests
 

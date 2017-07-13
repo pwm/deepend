@@ -4,22 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.1.2] - 2017-07-13
-### Changed
-  * Update metadata in composer.json
-  * Update .gitignore
-  
-## [1.1.1] - 2017-07-13
-### Changed
-  * Extended the readme
-
-### Fixed
-  * Missing return type hint
-  
-## [1.1.0] - 2017-07-12
+## [1.1.0] - 2017-07-13
 ### Added
   * The ability to adding arbitrary data to Nodes
-
+  
 ## [1.0.0] - 2017-07-12
 ### Added
   * Initial release
