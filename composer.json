@@ -1,7 +1,9 @@
 {
     "name": "pwm/deepend",
+    "description": "A simple library for scheduling dependent task execution",
     "type": "library",
-    "description": "DeepEnd",
+    "keywords": ["scheduled-tasks", "topological-sort", "graph-algorithms"],
+    "homepage": "https://github.com/pwm/deepend",
     "license": "MIT",
     "authors": [
         {
