@@ -15,7 +15,7 @@ class DeepEnd
     /** @var Node[][] */
     private $adjacencyList = [];
 
-    public function add(string $nodeId, $nodeData = null): void
+    public function add(string $nodeId, /* mixed */ $nodeData = null): void
     {
         if ($this->retrieveNode($nodeId) instanceof Node) {
             throw new NodeAlreadyPresent(sprintf('Node %s is already present.', $nodeId));
@@ -81,7 +81,7 @@ class DeepEnd
 
     private function isReachable(Node $fromNode, Node $toNode): bool
     {
-        $explore = function (Node $node) use (&$explore) {
+        $explore = function (Node $node) use (&$explore): void {
             $node->visit();
             foreach ($this->adjacencyList[$node->getId()] as $nextNode) {
                 if (! $nextNode->visited()) {

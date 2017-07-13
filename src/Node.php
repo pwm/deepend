@@ -17,7 +17,7 @@ class Node
     /** @var int */
     private $index = 0;
 
-    public function __construct(string $id, $data = null)
+    public function __construct(string $id, /* mixed */ $data = null)
     {
         $this->id = $id;
         $this->data = $data;
