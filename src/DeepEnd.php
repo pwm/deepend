@@ -32,7 +32,6 @@ class DeepEnd
         if (! ($toNode = $this->retrieveNode($arrow->getToNodeId())) instanceof Node) {
             throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $arrow->getToNodeId()));
         }
-
         if ($this->isReachable($toNode, $fromNode)) {
             throw new CycleDetected(
                 sprintf('An arrow from %s to %s would result in a cycle.', $fromNode->getId(), $toNode->getId())
@@ -45,8 +44,8 @@ class DeepEnd
     public function sort(): array
     {
         $nodesSortedByIndex = $this->topologicalSort();
-        return array_map(function (Node $v): string {
-            return $v->getId();
+        return array_map(function (Node $node): string {
+            return $node->getId();
         }, $nodesSortedByIndex);
     }
 
@@ -121,8 +120,8 @@ class DeepEnd
 
     private static function sortNodeByIndex(array $nodeIdMap): array
     {
-        usort($nodeIdMap, function (Node $v1, Node $v2): int {
-            return $v2->getIndex() - $v1->getIndex();
+        usort($nodeIdMap, function (Node $a, Node $b): int {
+            return $b->getIndex() - $a->getIndex();
         });
         return $nodeIdMap;
     }
