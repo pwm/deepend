@@ -42,8 +42,8 @@ class DeepEnd
     public function sort(): array
     {
         $sortedNodes = $this->topologicalSort();
-        return array_map(function (Node $v): string {
-            return $v->getId();
+        return array_map(function (Node $node): string {
+            return $node->getId();
         }, $sortedNodes);
     }
 
@@ -122,8 +122,8 @@ class DeepEnd
 
     private static function sortNodeByIndex(array $nodeIdMap): array
     {
-        usort($nodeIdMap, function (Node $v1, Node $v2): int {
-            return $v2->getIndex() - $v1->getIndex();
+        usort($nodeIdMap, function (Node $a, Node $b): int {
+            return $b->getIndex() - $a->getIndex();
         });
         return $nodeIdMap;
     }
