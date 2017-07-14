@@ -17,21 +17,18 @@ class DeepEnd
 
     public function add(string $nodeId, /* mixed */ $nodeData = null): void
     {
-        if ($this->retrieveNode($nodeId) instanceof Node) {
+        if (isset($this->nodeIdMap[$nodeId])) {
             throw new NodeAlreadyPresent(sprintf('Node %s is already present.', $nodeId));
         }
+
         $this->nodeIdMap[$nodeId] = new Node($nodeId, $nodeData);
         $this->adjacencyList[$nodeId] = [];
     }
 
     public function draw(Arrow $arrow): void
     {
-        if (! ($fromNode = $this->retrieveNode($arrow->getFromNodeId())) instanceof Node) {
-            throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $arrow->getFromNodeId()));
-        }
-        if (! ($toNode = $this->retrieveNode($arrow->getToNodeId())) instanceof Node) {
-            throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $arrow->getToNodeId()));
-        }
+        $fromNode = $this->getNode($arrow->getFromNodeId());
+        $toNode = $this->getNode($arrow->getToNodeId());
 
         if ($this->isReachable($toNode, $fromNode)) {
             throw new CycleDetected(
@@ -44,25 +41,29 @@ class DeepEnd
 
     public function sort(): array
     {
-        $nodesSortedByIndex = $this->topologicalSort();
+        $sortedNodes = $this->topologicalSort();
         return array_map(function (Node $v): string {
             return $v->getId();
-        }, $nodesSortedByIndex);
+        }, $sortedNodes);
     }
 
     public function sortToMap(): array
     {
-        $nodesSortedByIndex = $this->topologicalSort();
+        $sortedNodes = $this->topologicalSort();
         $sortedNodeMap = [];
-        foreach ($nodesSortedByIndex as $node) { /** @var Node $node */
+        foreach ($sortedNodes as $node) {
             $sortedNodeMap[$node->getId()] = $node->getData();
         }
         return $sortedNodeMap;
     }
 
-    private function retrieveNode(string $nodeId): ?Node
+    private function getNode(string $nodeId): Node
     {
-        return $this->nodeIdMap[$nodeId] ?? null;
+        $node = $this->nodeIdMap[$nodeId] ?? null;
+        if (! $node instanceof Node) {
+            throw new NodeDoesNotExist(sprintf('Node %s does not exist.', $nodeId));
+        }
+        return $node;
     }
 
     private function unvisitNodes(): void
