@@ -1,5 +1,7 @@
 # DeepEnd
 
+[![Build Status](https://travis-ci.org/pwm/deepend.svg?branch=master)](https://travis-ci.org/pwm/deepend)
+
 A simple library for scheduling dependent task execution.
 
 The goal is to be able to build a network of dependent entities, eg. task ids, which can then be sorted into a correct execution order. This means that if task B depends on task A then task A comes before task B in the sorted order.

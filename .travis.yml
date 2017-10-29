@@ -1,3 +1,7 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=4995801497690a082a24a4cd9e4f33ce5c636886a5097311c1a8050dd3e43d8e
+
 sudo: false
 
 language: php
@@ -5,7 +9,6 @@ language: php
 php:
   - 7.1
   - 7.2
-  - nightly
 
 before_install:
   - composer self-update
@@ -14,9 +17,15 @@ install:
   - travis_retry composer update
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - echo 'date.timezone = "Europe/London"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 script:
   - vendor/bin/phpcs --standard=PSR2 --warning-severity=0 src
   - vendor/bin/phpstan analyse -l 7 src
   - vendor/bin/phpunit --coverage-text
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
