@@ -82,6 +82,8 @@ Once you have your graph built the `sort()` method can be used to do what is cal
 ## Tests
 
 	$ vendor/bin/phpunit
+	$ composer phpcs
+	$ composer phpstan
 
 ## Changelog
 
