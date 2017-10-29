@@ -14,7 +14,6 @@ install:
   - travis_retry composer update
 
 before_script:
-  - phpenv config-rm xdebug.ini
   - echo 'date.timezone = "Europe/London"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 script:
