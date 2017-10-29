@@ -1,8 +1,11 @@
 # DeepEnd
 
 [![Build Status](https://travis-ci.org/pwm/deepend.svg?branch=master)](https://travis-ci.org/pwm/deepend)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5f290f7ca04ac4f032e1/maintainability)](https://codeclimate.com/github/pwm/deepend/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/5f290f7ca04ac4f032e1/test_coverage)](https://codeclimate.com/github/pwm/deepend/test_coverage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A simple library for scheduling dependent task execution.
+A library for scheduling dependent task execution.
 
 The goal is to be able to build a network of dependent entities, eg. task ids, which can then be sorted into a correct execution order. This means that if task B depends on task A then task A comes before task B in the sorted order.
 
