@@ -1,6 +1,7 @@
 # DeepEnd
 
 [![Build Status](https://travis-ci.org/pwm/deepend.svg?branch=master)](https://travis-ci.org/pwm/deepend)
+[![codecov](https://codecov.io/gh/pwm/deepend/branch/master/graph/badge.svg)](https://codecov.io/gh/pwm/deepend)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5f290f7ca04ac4f032e1/maintainability)](https://codeclimate.com/github/pwm/deepend/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5f290f7ca04ac4f032e1/test_coverage)](https://codeclimate.com/github/pwm/deepend/test_coverage)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
