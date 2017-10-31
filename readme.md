@@ -17,6 +17,7 @@ The goal is to be able to build a network of dependent entities, eg. task ids, w
 * [How it works](#how-it-works)
 * [Tests](#tests)
 * [Changelog](#changelog)
+* [Licence](#licence)
 
 ## Requirements
 
@@ -97,3 +98,7 @@ Once you have your graph built the `sort()` method can be used to do what is cal
 ## Changelog
 
 [Click here](changelog.md)
+
+## Licence
+
+[MIT](LICENSE)
