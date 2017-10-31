@@ -9,6 +9,15 @@ A library for scheduling dependent task execution.
 
 The goal is to be able to build a network of dependent entities, eg. task ids, which can then be sorted into a correct execution order. This means that if task B depends on task A then task A comes before task B in the sorted order.
 
+## Table of Contents
+
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Usage](#usage)
+* [How it works](#how-it-works)
+* [Tests](#tests)
+* [Changelog](#changelog)
+
 ## Requirements
 
 PHP 7.1+
