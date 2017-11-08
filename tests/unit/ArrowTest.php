@@ -13,7 +13,7 @@ class ArrowTest extends TestCase
     public function arrow_can_be_created(): void
     {
         $arrow = new Arrow;
-        static::assertInstanceOf(Arrow::class, $arrow);
+        self::assertInstanceOf(Arrow::class, $arrow);
     }
 
     /**
@@ -25,8 +25,8 @@ class ArrowTest extends TestCase
         $arrow->from('from');
         $arrow->to('to');
 
-        static::assertSame('from', $arrow->getFromNodeId());
-        static::assertSame('to', $arrow->getToNodeId());
+        self::assertSame('from', $arrow->getFromNodeId());
+        self::assertSame('to', $arrow->getToNodeId());
     }
 
     /**
@@ -36,8 +36,8 @@ class ArrowTest extends TestCase
     {
         $arrow = (new Arrow)->from('from')->to('to');
 
-        static::assertSame('from', $arrow->getFromNodeId());
-        static::assertSame('to', $arrow->getToNodeId());
+        self::assertSame('from', $arrow->getFromNodeId());
+        self::assertSame('to', $arrow->getToNodeId());
     }
 
     /**

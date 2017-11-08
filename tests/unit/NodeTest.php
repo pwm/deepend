@@ -13,11 +13,11 @@ class NodeTest extends TestCase
     public function node_can_be_created(): void
     {
         $node = new Node('id');
-        static::assertInstanceOf(Node::class, $node);
-        static::assertSame('id', $node->getId());
-        static::assertNull($node->getData());
-        static::assertFalse($node->visited());
-        static::assertSame(0, $node->getIndex());
+        self::assertInstanceOf(Node::class, $node);
+        self::assertSame('id', $node->getId());
+        self::assertNull($node->getData());
+        self::assertFalse($node->visited());
+        self::assertSame(0, $node->getIndex());
     }
 
     /**
@@ -26,7 +26,7 @@ class NodeTest extends TestCase
     public function node_can_be_created_with_data(): void
     {
         $node = new Node('id', 'data');
-        static::assertSame('data', $node->getData());
+        self::assertSame('data', $node->getData());
     }
 
     /**
@@ -35,11 +35,11 @@ class NodeTest extends TestCase
     public function node_can_be_visited_and_unvisited(): void
     {
         $node = new Node('id');
-        static::assertFalse($node->visited());
+        self::assertFalse($node->visited());
         $node->visit();
-        static::assertTrue($node->visited());
+        self::assertTrue($node->visited());
         $node->unvisit();
-        static::assertFalse($node->visited());
+        self::assertFalse($node->visited());
     }
 
     /**
@@ -48,8 +48,8 @@ class NodeTest extends TestCase
     public function node_index_can_be_set(): void
     {
         $node = new Node('id');
-        static::assertSame(0, $node->getIndex());
+        self::assertSame(0, $node->getIndex());
         $node->setIndex(1);
-        static::assertSame(1, $node->getIndex());
+        self::assertSame(1, $node->getIndex());
     }
 }

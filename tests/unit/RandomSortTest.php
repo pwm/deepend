@@ -13,7 +13,7 @@ class RandomSortTest extends TestCase
     public function normal_sort_of_an_acyclic_graph(): void
     {
         $expectedOrder = ['i', 'g', 'e', 'f', 'c', 'h', 'd', 'b', 'a'];
-        static::assertSame($expectedOrder, $this->getDAG()->sort());
+        self::assertSame($expectedOrder, $this->getDAG()->sort());
     }
 
     /**
@@ -32,7 +32,7 @@ class RandomSortTest extends TestCase
             'b' => 'b-data',
             'a' => 'a-data',
         ];
-        static::assertSame($expectedOrder, $this->getDAG()->sortToMap());
+        self::assertSame($expectedOrder, $this->getDAG()->sortToMap());
     }
 
     /**

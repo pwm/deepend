@@ -14,7 +14,7 @@ class GraphInvariantsTest extends TestCase
     public function order_zero_graphs_sort_to_empty_arrays(): void
     {
         $deepEnd = new DeepEnd();
-        static::assertSame([], $deepEnd->sort());
+        self::assertSame([], $deepEnd->sort());
     }
 
     /**
@@ -24,7 +24,7 @@ class GraphInvariantsTest extends TestCase
     {
         $deepEnd = new DeepEnd();
         $deepEnd->add('a');
-        static::assertSame(['a'], $deepEnd->sort());
+        self::assertSame(['a'], $deepEnd->sort());
     }
 
     /**
@@ -35,12 +35,12 @@ class GraphInvariantsTest extends TestCase
         $deepEnd = new DeepEnd();
         $deepEnd->add('a');
         $deepEnd->add('b');
-        static::assertSame(['b', 'a'], $deepEnd->sort());
+        self::assertSame(['b', 'a'], $deepEnd->sort());
 
         $deepEnd = new DeepEnd();
         $deepEnd->add('b');
         $deepEnd->add('a');
-        static::assertSame(['a', 'b'], $deepEnd->sort());
+        self::assertSame(['a', 'b'], $deepEnd->sort());
 
         $a = range(0, 999);
         shuffle($a);
@@ -51,7 +51,7 @@ class GraphInvariantsTest extends TestCase
             $deepEnd->add($e);
         }
 
-        static::assertSame(array_reverse($a), $deepEnd->sort());
+        self::assertSame(array_reverse($a), $deepEnd->sort());
     }
 
     /**
@@ -63,13 +63,13 @@ class GraphInvariantsTest extends TestCase
         $deepEnd->add('source');
         $deepEnd->add('sink');
         $deepEnd->draw((new Arrow)->from('source')->to('sink'));
-        static::assertSame(['source', 'sink'], $deepEnd->sort());
+        self::assertSame(['source', 'sink'], $deepEnd->sort());
 
         $deepEnd = new DeepEnd();
         $deepEnd->add('sink');
         $deepEnd->add('source');
         $deepEnd->draw((new Arrow)->from('source')->to('sink'));
-        static::assertSame(['source', 'sink'], $deepEnd->sort());
+        self::assertSame(['source', 'sink'], $deepEnd->sort());
     }
 
     /**
@@ -87,7 +87,7 @@ class GraphInvariantsTest extends TestCase
         $deepEnd->draw((new Arrow)->from('a')->to('b'));
         $deepEnd->draw((new Arrow)->from('d')->to('c'));
         $deepEnd->draw((new Arrow)->from('f')->to('e'));
-        static::assertSame(['f', 'e', 'd', 'c', 'a', 'b'], $deepEnd->sort());
+        self::assertSame(['f', 'e', 'd', 'c', 'a', 'b'], $deepEnd->sort());
     }
 
     /**
@@ -104,7 +104,7 @@ class GraphInvariantsTest extends TestCase
         $deepEnd->draw((new Arrow)->from('a')->to('b'));
         $secondSort = $deepEnd->sort();
 
-        static::assertSame($firstSort, $secondSort);
+        self::assertSame($firstSort, $secondSort);
     }
 
     /**
@@ -135,6 +135,6 @@ class GraphInvariantsTest extends TestCase
             } catch (CycleDetected $e) {}
         }
 
-        static::assertSame($deepEnd->sort(), $deepEnd->sort());
+        self::assertSame($deepEnd->sort(), $deepEnd->sort());
     }
 }
